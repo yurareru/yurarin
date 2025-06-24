@@ -1,0 +1,5 @@
+{
+  "ignore": [
+    "latest.log.offset.json"
+  ]
+}

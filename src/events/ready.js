@@ -1,4 +1,6 @@
 import chalk from 'chalk'
+import { connectRCON } from '../rcon.js'
+import { watchMinecraftLog } from '../features/minecraft.js'
 
 const platformIcons = {
   web: '🌐',
@@ -16,11 +18,14 @@ const statusColors = {
 export default {
   name: 'ready',
   once: true,
-  execute(client) {
+  async execute(client) {
     console.log(chalk.bgGreen.black(' Bot is online. '))
+    await connectRCON()
     const guild = client.guilds.cache.get(process.env.GUILD_TARGET)
 
     let lastLog = ''
+    const channel = await client.channels.fetch(process.env.MC_CHANNEL_ID)
+    watchMinecraftLog(process.env.MC_LOG_PATH, channel)
 
     setInterval(async () => {
       const member = await guild.members.fetch(process.env.MEMBER_TARGET)
